@@ -1,2 +1,1 @@
-# TRIGA-CFD-Model
-TRIGA Hot Fuel Rod CFD Model
+### Thermal hydraulic analysis of TRIGA ressearch reactor

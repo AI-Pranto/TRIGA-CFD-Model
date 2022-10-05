@@ -1,0 +1,71 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  9                                     |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     chtMultiRegionFoam;
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         1000;
+
+deltaT          1e-4;
+
+writeControl    adjustableRunTime;
+
+writeInterval   500;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression uncompressed;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+adjustTimeStep    yes;
+
+maxCo             0.5;
+
+OptimisationSwitches
+{
+
+mpiBufferSize 20000000;
+
+}
+
+functions
+{
+    wallHeatFlux1
+    {
+    type            wallHeatFlux;
+    libs            ("libfieldFunctionObjects.so");
+    patches         ("fuel_to_clad");
+    region          fuel;
+    executeControl  writeTime;
+    writeControl    writeTime;
+    }
+}
+// ************************************************************************* //

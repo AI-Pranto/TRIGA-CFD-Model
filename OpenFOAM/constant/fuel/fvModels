@@ -1,0 +1,63 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  9
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "constant/fuel";
+    object      fvModels;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+/*
+energySource
+{
+    type            heatSource;
+
+    selectionMode   all;
+
+    q               18.8127e7; // w/m3
+}
+*/
+
+energySource
+{
+    type            coded;
+    selectionMode   all;
+    field           e;
+
+        codeInclude
+        #{
+
+        #};
+
+        codeAddSup
+        #{
+
+        #};
+
+        codeAddRhoSup
+        #{
+            const scalar pi(M_PI);
+            const scalarField& V = mesh().V();
+            const scalarField& C = mesh().C().component(2);
+            scalarField& heSource = eqn.source();
+            forAll(C, i)
+            {
+                heSource[i] -= 18.8127e7*sin((pi*C[i])/0.381)*V[i];
+            }
+        #};
+
+        codeAddAlphaRhoSup
+        #{
+
+        #};
+
+}
+
+// ************************************************************************* //
